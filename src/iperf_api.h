@@ -324,6 +324,8 @@ enum {
     IEPIDFILE = 135,	    // Unable to write PID file
     IEV6ONLY = 136,  	    // Unable to set/unset IPV6_V6ONLY (check perror)
     IESETSCTPDISABLEFRAG = 137, // Unable to set SCTP Fragmentation (check perror)
+    IESETJUNK = 138,        // Unable to set TCP JUNK (check perror)
+    IESETEDO = 139,         // Unable to set TCP EDO (check perror)
     /* Stream errors */
     IECREATESTREAM = 200,   // Unable to create a new stream (check herror/perror)
     IEINITSTREAM = 201,     // Unable to initialize stream (check herror/perror)

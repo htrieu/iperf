@@ -617,6 +617,8 @@ iperf_parse_arguments(struct iperf_test *test, int argc, char **argv)
         {"cport", required_argument, NULL, OPT_CLIENT_PORT},
         {"set-mss", required_argument, NULL, 'M'},
         {"no-delay", no_argument, NULL, 'N'},
+        {"junk", no_argument, NULL, 'K'},
+        {"edo", no_argument, NULL, 'E'},
         {"version4", no_argument, NULL, '4'},
         {"version6", no_argument, NULL, '6'},
         {"tos", required_argument, NULL, 'S'},
@@ -655,7 +657,7 @@ iperf_parse_arguments(struct iperf_test *test, int argc, char **argv)
 
     blksize = 0;
     server_flag = client_flag = rate_flag = duration_flag = 0;
-    while ((flag = getopt_long(argc, argv, "p:f:i:D1VJvsc:ub:t:n:k:l:P:Rw:B:M:N46S:L:ZO:F:A:T:C:dI:h", longopts, NULL)) != -1) {
+    while ((flag = getopt_long(argc, argv, "p:f:i:D1VJvsc:ub:t:n:k:l:P:Rw:B:M:N46S:L:ZO:F:A:T:C:dI:hEK", longopts, NULL)) != -1) {
         switch (flag) {
             case 'p':
                 test->server_port = atoi(optarg);
@@ -794,6 +796,12 @@ iperf_parse_arguments(struct iperf_test *test, int argc, char **argv)
             case 'N':
                 test->no_delay = 1;
 		client_flag = 1;
+                break;
+            case 'K':
+                test->junk = 1;
+                break;
+            case 'E':
+                test->edo = 1;
                 break;
             case '4':
                 test->settings->domain = AF_INET;

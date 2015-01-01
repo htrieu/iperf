@@ -361,6 +361,32 @@ iperf_tcp_connect(struct iperf_test *test)
     }
 
     /* Set socket options */
+    /* TODO: We use 27 and 26 instead of TCP_JUNK and TCP_EDO because 
+     * although TCP_JUNK and TCP_EDO are declared in 
+     * Linux/include/uapi/linux/tcp.h, they are not recognized in
+     * userspace. Haven't found the cause of this yet. */
+    if (test->junk) {
+        opt = 1;
+        if (setsockopt(s, IPPROTO_TCP, 27, &opt, sizeof(opt)) < 0) {
+        saved_errno = errno;
+        close(s);
+        freeaddrinfo(server_res);
+        errno = saved_errno;
+            i_errno = IESETJUNK;
+            return -1;
+        }
+    }
+    if (test->edo) {
+        opt = 1;
+        if (setsockopt(s, IPPROTO_TCP, 26, &opt, sizeof(opt)) < 0) {
+            saved_errno = errno;
+            close(s);
+            freeaddrinfo(server_res);
+            errno = saved_errno;
+                i_errno = IESETEDO;
+                return -1;
+        }
+    }
     if (test->no_delay) {
         opt = 1;
         if (setsockopt(s, IPPROTO_TCP, TCP_NODELAY, &opt, sizeof(opt)) < 0) {
